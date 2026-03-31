@@ -7,8 +7,16 @@ return {
   keys = {
     { "<leader>cg", "<cmd>CMakeGenerate<cr>", desc = "CMake: Configure" },
     { "<leader>cb", "<cmd>CMakeBuild<cr>", desc = "CMake: Build" },
+    { "<leader>cB", "<cmd>CMakeSelectBuildTarget<cr>", desc = "CMake: Select Build Target" },
     { "<leader>cd", "<cmd>CMakeDebug<cr>", desc = "CMake: Debug" },
-    { "<leader>ct", "<cmd>CMakeSelectLaunchTarget<cr>", desc = "CMake: Select Target" },
+    { "<leader>ct", function()
+      local cmake = require("cmake-tools")
+      cmake.select_launch_target(false, function(result)
+        if result:is_ok() then
+          cmake.get_config().build_target = { result.data }
+        end
+      end)
+    end, desc = "CMake: Select Target" },
     { "<leader>cp", "<cmd>CMakeSelectConfigurePreset<cr>", desc = "CMake: Select Preset" },
     { "<leader>cr", "<cmd>CMakeRun<cr>", desc = "CMake: Run" },
     { "<leader>cc", "<cmd>CMakeClean<cr>", desc = "CMake: Clean" },
