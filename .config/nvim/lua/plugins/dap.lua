@@ -59,9 +59,28 @@ return {
       { "<F10>", function() require("dap").step_over() end, desc = "Debug: Step Over" },
       { "<F11>", function() require("dap").step_into() end, desc = "Debug: Step Into" },
       { "<S-F11>", function() require("dap").step_out() end, desc = "Debug: Step Out" },
+      { "<F23>", function() require("dap").step_out() end, desc = "Debug: Step Out" },
       { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, desc = "Debug: Conditional Breakpoint" },
       { "<leader>dl", function() require("dap").run_last() end, desc = "Debug: Run Last" },
       { "<leader>dr", function() require("dap").repl.open() end, desc = "Debug: REPL" },
+      { "<S-F5>", function()
+        local dap = require("dap")
+        local session = dap.session()
+        if session and session.stopped_thread_id then
+          dap.terminate()
+        else
+          dap.pause(0)
+        end
+      end, desc = "Debug: Pause / Terminate" },
+      { "<F17>", function()
+        local dap = require("dap")
+        local session = dap.session()
+        if session and session.stopped_thread_id then
+          dap.terminate()
+        else
+          dap.pause(0)
+        end
+      end, desc = "Debug: Pause / Terminate" },
       { "<leader>dq", function() require("dap").terminate() end, desc = "Debug: Terminate" },
       { "<leader>dp", function() require("dap").pause() end, desc = "Debug: Interrupt/Pause" },
     },
