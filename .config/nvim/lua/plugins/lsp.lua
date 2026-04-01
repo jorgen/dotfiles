@@ -18,7 +18,6 @@ return {
       vim.lsp.config("clangd", {
         cmd = {
           "clangd",
-          "--compile-commands-dir=/home/jlind/dev/build/linux-debug-dev-gcc-cuda",
           "--background-index",
           "--clang-tidy",
           "--header-insertion=iwyu",

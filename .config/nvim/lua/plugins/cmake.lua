@@ -25,17 +25,16 @@ return {
   },
   opts = {
     cmake_command = "cmake",
-    cmake_build_directory = "/home/jlind/dev/build/${presetName}",
+    cmake_build_directory = "build/${presetName}",
     cmake_build_options = { "-j" },
+    cmake_compile_commands_options = {
+      action = "lsp",
+    },
     cmake_dap_configuration = {
       name = "CMake Debug",
       type = "codelldb",
       request = "launch",
       stopOnEntry = false,
-      cwd = "/home/jlind/dev/zivid-sdk",
-      env = {
-        INTERNAL_TEST_DATA_DIR = "/home/jlind/dev/zivid-sdk/sdk/test-data",
-      },
     },
     cmake_executor = {
       name = "quickfix",
