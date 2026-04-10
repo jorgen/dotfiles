@@ -106,9 +106,9 @@ return {
           end,
           cwd = "${workspaceFolder}",
           stopOnEntry = false,
-          env = {
-            INTERNAL_TEST_DATA_DIR = "/home/jlind/dev/zivid-sdk/sdk/test-data",
-          },
+          env = function()
+            return require("config.env").load()
+          end,
         },
       }
       dap.configurations.c = dap.configurations.cpp

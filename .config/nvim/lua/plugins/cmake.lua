@@ -8,7 +8,10 @@ return {
     { "<leader>cg", "<cmd>CMakeGenerate<cr>", desc = "CMake: Configure" },
     { "<leader>cb", "<cmd>CMakeBuild<cr>", desc = "CMake: Build" },
     { "<leader>cB", "<cmd>CMakeSelectBuildTarget<cr>", desc = "CMake: Select Build Target" },
-    { "<leader>cd", "<cmd>CMakeDebug<cr>", desc = "CMake: Debug" },
+    { "<leader>cd", function()
+      require("cmake-tools").get_config().base_settings.env = require("config.env").load()
+      vim.cmd("CMakeDebug")
+    end, desc = "CMake: Debug" },
     { "<leader>ct", function()
       local cmake = require("cmake-tools")
       cmake.select_launch_target(false, function(result)
@@ -18,7 +21,10 @@ return {
       end)
     end, desc = "CMake: Select Target" },
     { "<leader>cp", "<cmd>CMakeSelectConfigurePreset<cr>", desc = "CMake: Select Preset" },
-    { "<leader>cr", "<cmd>CMakeRun<cr>", desc = "CMake: Run" },
+    { "<leader>cr", function()
+      require("cmake-tools").get_config().base_settings.env = require("config.env").load()
+      vim.cmd("CMakeRun")
+    end, desc = "CMake: Run" },
     { "<leader>cc", "<cmd>CMakeClean<cr>", desc = "CMake: Clean" },
     { "<leader>ca", function() vim.ui.input({ prompt = "CMake launch args: " }, function(input) if input then vim.cmd("CMakeLaunchArgs " .. input) end end) end, desc = "CMake: Set Launch Args" },
     { "<leader>cs", "<cmd>CMakeTargetSettings<cr>", desc = "CMake: Target Settings" },
@@ -57,6 +63,7 @@ return {
       else
         local cmake = require("cmake-tools")
         if cmake.is_cmake_project() and cmake.has_cmake_preset() then
+          cmake.get_config().base_settings.env = require("config.env").load()
           for _, buf in ipairs(vim.api.nvim_list_bufs()) do
             if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].modified and vim.api.nvim_buf_get_name(buf) ~= "" and vim.bo[buf].buftype == "" then
               vim.api.nvim_buf_call(buf, function() vim.cmd("write") end)

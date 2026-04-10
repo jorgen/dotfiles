@@ -1,8 +1,19 @@
 return {
   {
     "williamboman/mason.nvim",
-    cmd = "Mason",
-    opts = {},
+    opts = {
+      ensure_installed = { "typos-lsp" },
+    },
+    config = function(_, opts)
+      require("mason").setup(opts)
+      local mr = require("mason-registry")
+      for _, tool in ipairs(opts.ensure_installed or {}) do
+        local p = mr.get_package(tool)
+        if not p:is_installed() then
+          p:install()
+        end
+      end
+    end,
   },
 
   {
@@ -39,7 +50,11 @@ return {
         },
       })
 
-      vim.lsp.enable({ "clangd", "lua_ls" })
+      vim.lsp.config("typos_lsp", {
+        root_markers = { ".git" },
+      })
+
+      vim.lsp.enable({ "clangd", "lua_ls", "typos_lsp" })
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(ev)
